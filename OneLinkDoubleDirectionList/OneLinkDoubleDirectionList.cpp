@@ -14,7 +14,7 @@ void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, s
 
 bool isDummy(struct Node* nP);
 
-struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP);
+struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP);
 
 int main() {
 	struct Node* dumHeadP = (struct Node*)malloc(sizeof(struct Node));
@@ -31,9 +31,8 @@ int main() {
 	struct Node* newNP2 = (struct Node*)malloc(sizeof(struct Node));
 	initNode(4, newNP2);
 
-	addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
+	//addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
 
-	struct Node* found = findN(4, dumTailP, afterTailP);
 }
 
 void initNode(float num, struct Node* nP) {
@@ -62,7 +61,7 @@ bool isDummy(struct Node* nP) {
 	return nP->link == 0;
 }
 
-struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP) {
+struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP) {
 	struct Node* cur = afterTailP;
 	struct Node* prevCur = dumTailP;
 	
@@ -71,5 +70,6 @@ struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP)
 		cur = prevCur + cur->link;
 		prevCur = temp;
 	}
+	*prevDestPP = prevCur;
 	return cur;
 }
