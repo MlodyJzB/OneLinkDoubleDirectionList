@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
 
 // defines for actions
 #define ADD 1
@@ -12,7 +13,7 @@
 
 struct Node {
 	float number;
-	int link;
+	long long link;
 };
 
 void initNode(float num, struct Node* nP);
@@ -29,9 +30,9 @@ void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, 
 
 void editN(float num, struct Node* toEdit);
 
-void showT(struct Node* dumTailP, struct Node* afterTailP);
+void dispT(struct Node* dumTailP, struct Node* afterTailP);
 
-void showH(struct Node* dumHeadP, struct Node* prevHeadP);
+void dispH(struct Node* dumHeadP, struct Node* prevHeadP);
 
 int getState();
 
@@ -47,25 +48,96 @@ int main() {
 	struct Node* prevHeadP = dumTailP;
 	struct Node* afterTailP = dumHeadP;
 
-	struct Node* newNP = (struct Node*)malloc(sizeof(struct Node));
-	initNode(3, newNP);
-	struct Node* newNP2 = (struct Node*)malloc(sizeof(struct Node));
-	initNode(4, newNP2);
-	struct Node* newNP3 = (struct Node*)malloc(sizeof(struct Node));
-	initNode(5, newNP3);
+	struct Node* foundP = dumHeadP;
+	struct Node* prevFoundP = dumTailP;
 
-	addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
-	showT(dumTailP, afterTailP);
+	while (1) {
+		printActions();
+		printf("\nChoose action: ");
 
-	struct Node* prevFound;
-	struct Node* foundP = findN(3, &prevFound, dumTailP, afterTailP);
-	deleteN(foundP, prevFound, &prevHeadP, &afterTailP);
-	showT(dumTailP, afterTailP);
+		int state = getState();
 
-	addN(newNP2, dumHeadP, &prevHeadP, &afterTailP);
-	addN(newNP3, dumHeadP, &prevHeadP, &afterTailP);
-	showT(dumTailP, afterTailP);
-	showH(dumHeadP, prevHeadP);
+		switch (state) {
+		case ADD: {
+			float numToAdd;
+			printf("Provide float to add: ");
+			scanf_s("%f", &numToAdd);
+
+			struct Node* toAddP = (struct Node*)malloc(sizeof(struct Node));
+			initNode(numToAdd, toAddP);
+
+			addN(toAddP, dumHeadP, &prevHeadP, &afterTailP);
+			break;
+		}
+
+		case DEL: {
+			if (foundP != dumHeadP) {
+				deleteN(foundP, prevFoundP, &prevHeadP, &afterTailP);
+				foundP = dumHeadP;
+			}
+			else {
+				printf("\nProvide float to delete!\n");
+				_getch();
+			}
+			break;
+		}
+
+		case FIND: {
+			float numToFind;
+			printf("Provide float to find: ");
+			scanf_s("%f", &numToFind);
+
+			foundP = findN(numToFind, &prevFoundP, dumTailP, afterTailP);
+
+			if (foundP == dumHeadP) {
+				printf("\nProvided float not found!\n");
+			}
+
+			break;
+		}
+
+		case EDIT: {
+
+			float newNum;
+			printf("Provide new float: ");
+			scanf_s("%f", &newNum);
+
+			if (foundP != dumHeadP) {
+				editN(newNum, foundP);
+				foundP = dumHeadP;
+			}
+			else {
+				printf("\nProvide float to edit!\n");
+				_getch();
+			}
+			break;
+		}
+
+		case DISPT: {
+			dispT(dumTailP, afterTailP);
+			_getch();
+			break;
+		}
+		case DISPH: {
+			dispH(dumHeadP, prevHeadP);
+			_getch();
+			break;
+		}
+
+		case EXIT: {
+			return 0;
+			break;
+		}
+
+		default: {
+			printf("Incorrect action!\n");
+		}
+
+		}
+
+		printActions();
+		printf("\nChoose action: ");
+	}
 
 	return 0;
 }
@@ -137,7 +209,7 @@ void editN(float num, struct Node* toEdit) {
 	return;
 }
 
-void showT(struct Node* dumTailP, struct Node* afterTailP) {
+void dispT(struct Node* dumTailP, struct Node* afterTailP) {
 	struct Node* curP = afterTailP;
 	struct Node* prevCurP = dumTailP;
 
@@ -152,7 +224,7 @@ void showT(struct Node* dumTailP, struct Node* afterTailP) {
 	return;
 }
 
-void showH(struct Node* dumHeadP, struct Node* prevHeadP) {
+void dispH(struct Node* dumHeadP, struct Node* prevHeadP) {
 	struct Node* curP = prevHeadP;
 	struct Node* prevCurP = dumHeadP;
 
