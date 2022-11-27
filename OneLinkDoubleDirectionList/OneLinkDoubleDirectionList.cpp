@@ -16,7 +16,7 @@ bool isDummy(struct Node* nP);
 
 struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP);
 
-void deleteN(struct Node* toDel, struct Node* prev);
+void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, struct Node** afterTailPP);
 
 void showT(struct Node* dumTailP, struct Node* afterTailP);
 
@@ -71,39 +71,46 @@ bool isDummy(struct Node* nP) {
 }
 
 struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP) {
-	struct Node* cur = afterTailP;
-	struct Node* prevCur = dumTailP;
+	struct Node* curP = afterTailP;
+	struct Node* prevCurP = dumTailP;
 	
-	while ((cur->number != toFind) && (cur->link != 0)) {
-		struct Node* temp = cur;
-		cur = prevCur + cur->link;
-		prevCur = temp;
+	while ((curP->number != toFind) && (curP->link != 0)) {
+		struct Node* temp = curP;
+		curP = prevCurP + curP->link;
+		prevCurP = temp;
 	}
-	*prevDestPP = prevCur;
-	return cur;
+	*prevDestPP = prevCurP;
+	return curP;
 }
 
-void deleteN(struct Node* toDel, struct Node* prev) {
-	struct Node* next = prev + toDel->link;
-	if (!isDummy(next)) {
-		next->link += (toDel - prev);
+void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, struct Node** afterTailPP) {
+	struct Node* nextP = prevNP + toDel->link;
+
+	if (isDummy(nextP)) {
+		*prevHeadPP = prevNP;
 	}
-	if (!isDummy(prev)) {
-		prev->link += (next - toDel);
+	else {
+		nextP->link += (toDel - prevNP);
+	}
+	if (isDummy(prevNP)) {
+		*afterTailPP = nextP;
+	}
+	else {
+		prevNP->link += (nextP - toDel);
 	}
 
 	free(toDel);
 }
 
 void showT(struct Node* dumTailP, struct Node* afterTailP) {
-	struct Node* cur = afterTailP;
-	struct Node* prevCur = dumTailP;
+	struct Node* curP = afterTailP;
+	struct Node* prevCurP = dumTailP;
 
-	while (!isDummy(cur)) {
-		printf("%.3f ", cur->number);
+	while (!isDummy(curP)) {
+		printf("%.3f ", curP->number);
 
-		struct Node* temp = cur;
-		cur = prevCur + cur->link;
-		prevCur = temp;
+		struct Node* temp = curP;
+		curP = prevCurP + curP->link;
+		prevCurP = temp;
 	}
 }
