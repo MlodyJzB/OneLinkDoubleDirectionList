@@ -18,6 +18,8 @@ struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP
 
 void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, struct Node** afterTailPP);
 
+void editN(float num, struct Node* toEdit);
+
 void showT(struct Node* dumTailP, struct Node* afterTailP);
 
 void showH(struct Node* dumHeadP, struct Node* prevHeadP);
@@ -114,6 +116,11 @@ void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, 
 	}
 
 	free(toDel);
+	return;
+}
+
+void editN(float num, struct Node* toEdit) {
+	toEdit->number = num;
 	return;
 }
 
