@@ -12,6 +12,8 @@ void initDumNode(struct Node* nP);
 
 void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, struct Node** afterTailPP);
 
+bool isDummy(struct Node* nP);
+
 struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP);
 
 int main() {
@@ -30,7 +32,6 @@ int main() {
 	initNode(4, newNP2);
 
 	addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
-	addN(newNP2, dumHeadP, &prevHeadP, &afterTailP);
 
 	struct Node* found = findN(4, dumTailP, afterTailP);
 }
@@ -44,12 +45,21 @@ void initDumNode(struct Node* nP) {
 }
 
 void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, struct Node** afterTailPP) {
-	newNP->link = dumHeadP - *prevHeadPP;
+	newNP->link = dumHeadP - *prevHeadPP; // link to dummyHead
 
-	if ((*prevHeadPP)->link == 0) {
+	if (isDummy(*prevHeadPP)) {
 		*afterTailPP = newNP;
 	}
+	else {
+		(*prevHeadPP)->link += (newNP - dumHeadP); // link to added node instead of link to dummy head
+
+	}
+
 	*prevHeadPP = newNP;
+}
+
+bool isDummy(struct Node* nP) {
+	return nP->link == 0;
 }
 
 struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP) {
