@@ -16,6 +16,8 @@ bool isDummy(struct Node* nP);
 
 struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP);
 
+void deleteN(struct Node* toDel, struct Node* prev);
+
 int main() {
 	struct Node* dumHeadP = (struct Node*)malloc(sizeof(struct Node));
 	initDumNode(dumHeadP);
@@ -72,4 +74,16 @@ struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP
 	}
 	*prevDestPP = prevCur;
 	return cur;
+}
+
+void deleteN(struct Node* toDel, struct Node* prev) {
+	struct Node* next = prev + toDel->link;
+	if (!isDummy(next)) {
+		next->link += (toDel - prev);
+	}
+	if (!isDummy(prev)) {
+		prev->link += (next - toDel);
+	}
+
+	free(toDel);
 }
