@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// defines for actions
+#define ADD 1
+#define DEL 2
+#define FIND 3
+#define EDIT 4
+#define DISPT 5
+#define DISPH 6
+#define EXIT 0
+
 struct Node {
 	float number;
 	int link;
@@ -23,6 +32,10 @@ void editN(float num, struct Node* toEdit);
 void showT(struct Node* dumTailP, struct Node* afterTailP);
 
 void showH(struct Node* dumHeadP, struct Node* prevHeadP);
+
+int getState();
+
+void printActions();
 
 int main() {
 	struct Node* dumHeadP = (struct Node*)malloc(sizeof(struct Node));
@@ -151,5 +164,22 @@ void showH(struct Node* dumHeadP, struct Node* prevHeadP) {
 		prevCurP = temp;
 	}
 	printf("\n");
+	return;
+}
+
+int getState() {
+	int state;
+
+	do {
+		scanf_s("%d", &state);
+		getchar();
+	} while ((state < 0) || (state > 6));
+
+	return state;
+}
+
+void printActions() {
+	system("cls");
+	printf("Possible actions: \n1 - Add item\n2 - Delete item\n3 - Find item\n4 - Edit item\n5 - Show all items from beginning\n6 - Show all items from end\n0 - Exit\n");
 	return;
 }
