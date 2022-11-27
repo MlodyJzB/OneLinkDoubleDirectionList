@@ -12,6 +12,8 @@ void initDumNode(struct Node* nP);
 
 void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, struct Node** afterTailPP);
 
+struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP);
+
 int main() {
 	struct Node* dumHeadP = (struct Node*)malloc(sizeof(struct Node));
 	initDumNode(dumHeadP);
@@ -22,7 +24,15 @@ int main() {
 	struct Node* prevHeadP = dumTailP;
 	struct Node* afterTailP = dumHeadP;
 
-	
+	struct Node* newNP = (struct Node*)malloc(sizeof(struct Node));
+	initNode(3, newNP);
+	struct Node* newNP2 = (struct Node*)malloc(sizeof(struct Node));
+	initNode(4, newNP2);
+
+	addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
+	addN(newNP2, dumHeadP, &prevHeadP, &afterTailP);
+
+	struct Node* found = findN(4, dumTailP, afterTailP);
 }
 
 void initNode(float num, struct Node* nP) {
@@ -40,4 +50,16 @@ void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, s
 		*afterTailPP = newNP;
 	}
 	*prevHeadPP = newNP;
+}
+
+struct Node* findN(float toFind, struct Node* dumTailP, struct Node* afterTailP) {
+	struct Node* cur = afterTailP;
+	struct Node* prevCur = dumTailP;
+	
+	while ((cur->number != toFind) && (cur->link != 0)) {
+		struct Node* temp = cur;
+		cur = prevCur + cur->link;
+		prevCur = temp;
+	}
+	return cur;
 }
