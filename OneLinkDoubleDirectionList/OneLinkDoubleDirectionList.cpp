@@ -20,6 +20,8 @@ void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, 
 
 void showT(struct Node* dumTailP, struct Node* afterTailP);
 
+void showH(struct Node* dumHeadP, struct Node* prevHeadP);
+
 int main() {
 	struct Node* dumHeadP = (struct Node*)malloc(sizeof(struct Node));
 	initDumNode(dumHeadP);
@@ -38,18 +40,29 @@ int main() {
 	initNode(5, newNP3);
 
 	addN(newNP, dumHeadP, &prevHeadP, &afterTailP);
+	showT(dumTailP, afterTailP);
+
+	struct Node* prevFound;
+	struct Node* foundP = findN(3, &prevFound, dumTailP, afterTailP);
+	deleteN(foundP, prevFound, &prevHeadP, &afterTailP);
+	showT(dumTailP, afterTailP);
+
 	addN(newNP2, dumHeadP, &prevHeadP, &afterTailP);
 	addN(newNP3, dumHeadP, &prevHeadP, &afterTailP);
-
 	showT(dumTailP, afterTailP);
+	showH(dumHeadP, prevHeadP);
+
+	return 0;
 }
 
 void initNode(float num, struct Node* nP) {
 	nP->number = num;
+	return;
 }
 
 void initDumNode(struct Node* nP) {
 	nP->link = 0;
+	return;
 }
 
 void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, struct Node** afterTailPP) {
@@ -64,6 +77,7 @@ void addN(struct Node* newNP, struct Node* dumHeadP, struct Node** prevHeadPP, s
 	}
 
 	*prevHeadPP = newNP;
+	return;
 }
 
 bool isDummy(struct Node* nP) {
@@ -100,6 +114,7 @@ void deleteN(struct Node* toDel, struct Node* prevNP, struct Node** prevHeadPP, 
 	}
 
 	free(toDel);
+	return;
 }
 
 void showT(struct Node* dumTailP, struct Node* afterTailP) {
@@ -113,4 +128,21 @@ void showT(struct Node* dumTailP, struct Node* afterTailP) {
 		curP = prevCurP + curP->link;
 		prevCurP = temp;
 	}
+	printf("\n");
+	return;
+}
+
+void showH(struct Node* dumHeadP, struct Node* prevHeadP) {
+	struct Node* curP = prevHeadP;
+	struct Node* prevCurP = dumHeadP;
+
+	while (!isDummy(curP)) {
+		printf("%.3f ", curP->number);
+
+		struct Node* temp = curP;
+		curP = prevCurP - curP->link;
+		prevCurP = temp;
+	}
+	printf("\n");
+	return;
 }
