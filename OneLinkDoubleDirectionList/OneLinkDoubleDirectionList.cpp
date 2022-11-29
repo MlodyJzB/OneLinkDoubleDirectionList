@@ -1,3 +1,10 @@
+/*
+ * Author: Jakub Cimochowski
+ * Purpose: Implementation of Double Direction Linked List based on one link,
+ *			Basic menu in main function to conduct operations on List
+ * Language:  C
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -192,9 +199,11 @@ bool isDummy(struct Node* nP) {
 }
 
 struct Node* findN(float toFind, struct Node** prevDestPP, struct Node* dumTailP, struct Node* afterTailP) {
-	// find first node from tail by provided float and return it,
-	// if node is not found return dumHead
-	// provide parent node pointer of found node - *prevDestPP* argument
+	/*
+	 * find first node from tail by provided floatand return it,
+	 * if node is not found return dumHead
+	 * provide parent node pointer of found node - *prevDestPP* argument
+	 */
 
 	struct Node* curP = afterTailP;
 	struct Node* prevCurP = dumTailP;
