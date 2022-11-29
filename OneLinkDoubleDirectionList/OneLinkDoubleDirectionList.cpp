@@ -60,8 +60,8 @@ int main() {
 	struct Node* prevHeadP = dumTailP;
 	struct Node* afterTailP = dumHeadP;
 
-	struct Node* foundP = dumHeadP;
-	struct Node* prevFoundP = dumTailP;
+	struct Node* foundP = dumHeadP; // value which means that there is no found Node
+	struct Node* prevFoundP = dumTailP; 
 
 	while (1) {
 		// menu loop based on switch to run chosen actions
@@ -118,7 +118,7 @@ int main() {
 
 			if (foundP != dumHeadP) { // if foundP exists
 				editN(newNum, foundP);
-				foundP = dumHeadP; // 
+				foundP = dumHeadP; // reset value of found object 
 			}
 			else {
 				printf("\nProvide float to edit!\n");
